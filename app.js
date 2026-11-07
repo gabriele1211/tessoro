@@ -1,6 +1,17 @@
 'use strict';
 const $=id=>document.getElementById(id), KEY='tessoro.cards.v1';
 let cards=[],current=null,editId=null,stream=null,scanning=false,photoDraft=null,photoRemove=false;
+const USAGE_KEY='tessoro.usage.v1',ORDER_KEY='tessoro.order-mode.v1';
+let usageStats={};
+let orderMode='auto';
+try{const stored=JSON.parse(localStorage.getItem(USAGE_KEY)||'{}');if(stored&&typeof stored==='object'&&!Array.isArray(stored))usageStats=stored}catch{}
+try{orderMode=localStorage.getItem(ORDER_KEY)==='manual'?'manual':'auto'}catch{}
+function usageCount(id){const n=Number(usageStats[String(id)]?.count||0);return Number.isFinite(n)&&n>=0?n:0}
+function rankedCards(){return orderMode==='manual'?cards:cards.slice().sort((x,y)=>usageCount(y.id)-usageCount(x.id)||cards.indexOf(x)-cards.indexOf(y))}
+function updateOrderControls(){const b=$('orderMode');if(!b)return;b.textContent=orderMode==='auto'?'★ Ordine: automatico':'↕ Ordine: manuale';b.setAttribute('aria-pressed',String(orderMode==='auto'));const status=$('reorderStatus');if(status)status.textContent=orderMode==='auto'?'Le tessere più consultate salgono in alto. Tieni premuto e trascina per scegliere un ordine manuale.':defaultReorderText}
+function switchOrderMode(mode){orderMode=mode;try{localStorage.setItem(ORDER_KEY,mode)}catch{}updateOrderControls();render()}
+function recordCardUse(id){const key=String(id),old=usageStats[key]||{count:0};usageStats[key]={count:Math.min(1000000,(Number(old.count)||0)+1),lastOpened:Date.now()};try{localStorage.setItem(USAGE_KEY,JSON.stringify(usageStats))}catch{}}
+
 function toast(t){$('toast').textContent=t;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',3500)}
 function load(){try{const v=JSON.parse(localStorage.getItem(KEY)||'[]');cards=Array.isArray(v)?v:[]}catch{cards=[]}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(cards));return true}catch{toast('Impossibile salvare: memoria del browser non disponibile');return false}}
@@ -24,7 +35,7 @@ function installCardReorder(node,id){
   if(commit&&destination&&String(destination)!==String(id)){
    const from=cards.findIndex(c=>String(c.id)===String(id));
    const to=cards.findIndex(c=>String(c.id)===String(destination));
-   if(from>=0&&to>=0){const old=cards.slice();const [item]=cards.splice(from,1);cards.splice(to,0,item);if(save()){render();reorderNotice('✓ Tessera spostata alla posizione '+(to+1),true);toast('Tessera spostata alla posizione '+(to+1))}else cards=old}
+   if(from>=0&&to>=0){const old=cards.slice();const [item]=cards.splice(from,1);cards.splice(to,0,item);if(save()){orderMode='manual';try{localStorage.setItem(ORDER_KEY,'manual')}catch{}render();updateOrderControls();reorderNotice('✓ Ordine manuale attivato · posizione '+(to+1),true);toast('Tessera spostata alla posizione '+(to+1))}else cards=old}
   }else reorderNotice(defaultReorderText);
  };
  node.draggable=false;
@@ -51,12 +62,12 @@ function installCardReorder(node,id){
  node.addEventListener('dragstart',e=>{active=true;node.classList.add('is-reordering');e.dataTransfer.setData('text/plain',String(id));e.dataTransfer.effectAllowed='move'});
  node.addEventListener('dragend',()=>stop(false));
  node.addEventListener('dragover',e=>{e.preventDefault();clear();target=node;node.classList.add('drop-target')});
- node.addEventListener('drop',e=>{e.preventDefault();const sourceId=e.dataTransfer.getData('text/plain');const source=cards.findIndex(c=>String(c.id)===sourceId),destination=cards.findIndex(c=>String(c.id)===String(id));if(source>=0&&destination>=0&&source!==destination){const old=cards.slice();const [item]=cards.splice(source,1);cards.splice(destination,0,item);if(save()){render();reorderNotice('✓ Tessera spostata alla posizione '+(destination+1),true);toast('Ordine aggiornato')}else cards=old}});
+ node.addEventListener('drop',e=>{e.preventDefault();const sourceId=e.dataTransfer.getData('text/plain');const source=cards.findIndex(c=>String(c.id)===sourceId),destination=cards.findIndex(c=>String(c.id)===String(id));if(source>=0&&destination>=0&&source!==destination){const old=cards.slice();const [item]=cards.splice(source,1);cards.splice(destination,0,item);if(save()){orderMode='manual';try{localStorage.setItem(ORDER_KEY,'manual')}catch{}render();updateOrderControls();reorderNotice('✓ Ordine manuale attivato · posizione '+(destination+1),true);toast('Ordine aggiornato')}else cards=old}});
 }
 let homeRenderId=0;
 function render(){
  const root=$('cards');root.replaceChildren();
- const matches=cards;
+ const matches=rankedCards();
  $('empty').hidden=matches.length>0;
  const renderId=++homeRenderId;
  for(const c of matches){
@@ -132,7 +143,7 @@ $('barcodeTapTarget').addEventListener('click',openBarcodeFullscreen);
 $('barcodeTapTarget').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openBarcodeFullscreen()}});
 $('barcodeFullscreen').addEventListener('click',closeBarcodeFullscreen);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeBarcodeFullscreen()});
-async function detail(id){const c=cards.find(x=>x.id===id);if(!c)return;$('detailPhoto').hidden=true;try{const p=await TessOroPhotos.get(id);if(p){$('detailPhoto').src=p;$('detailPhoto').hidden=false}}catch(e){toast('Foto non disponibile: '+e.message)}current=id;$('cardActions').open=false;$('detailName').textContent=c.name;$('detailNumber').textContent=c.number;try{drawBarcode(c.format,c.number)}catch(e){toast(e.message);return}show('detail')}
+async function detail(id){const c=cards.find(x=>x.id===id);if(!c)return;$('detailPhoto').hidden=true;try{const p=await TessOroPhotos.get(id);if(p){$('detailPhoto').src=p;$('detailPhoto').hidden=false}}catch(e){toast('Foto non disponibile: '+e.message)}current=id;recordCardUse(id);$('cardActions').open=false;$('detailName').textContent=c.name;$('detailNumber').textContent=c.number;try{drawBarcode(c.format,c.number)}catch(e){toast(e.message);return}show('detail')}
 $('add').onclick=()=>openEditor();$('settings').onclick=()=>show('info');document.querySelectorAll('[data-home]').forEach(b=>b.onclick=()=>show('home'));
 let photoCameraStream=null,photoMonitor=null,photoCaptureBusy=false,photoStable=0,photoLastFrame=null;
 function stopPhotoMonitor(){if(photoMonitor){clearInterval(photoMonitor);photoMonitor=null}photoStable=0;photoLastFrame=null}
@@ -832,3 +843,6 @@ if('serviceWorker' in navigator){
 const TESSORO_SHARE_URL='https://gabriele1211.github.io/tessoro/';
 $('copyTessoroLink').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(TESSORO_SHARE_URL);toast('Link TessOro copiato')}catch{window.prompt('Copia il link:',TESSORO_SHARE_URL)}});
 $('shareTessoro').addEventListener('click',async()=>{if(navigator.share){try{await navigator.share({title:'TessOro',text:'Scopri TessOro, il portatessere digitale.',url:TESSORO_SHARE_URL})}catch(e){if(e.name!=='AbortError')toast('Usa Copia link per condividere')}}else{$('copyTessoroLink').click()}});
+
+$('orderMode').addEventListener('click',()=>switchOrderMode(orderMode==='auto'?'manual':'auto'));
+updateOrderControls();
