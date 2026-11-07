@@ -35,7 +35,7 @@ function installCardReorder(node,id){
   if(commit&&destination&&String(destination)!==String(id)){
    const from=cards.findIndex(c=>String(c.id)===String(id));
    const to=cards.findIndex(c=>String(c.id)===String(destination));
-   if(from>=0&&to>=0){const old=cards.slice();const [item]=cards.splice(from,1);cards.splice(to,0,item);if(save()){orderMode='manual';try{localStorage.setItem(ORDER_KEY,'manual')}catch{}render();updateOrderControls();reorderNotice('✓ Ordine manuale attivato · posizione '+(to+1),true);toast('Tessera spostata alla posizione '+(to+1))}else cards=old}
+   if(from>=0&&to>=0){const old=cards.slice();if(orderMode==='auto')cards=rankedCards();const fromVisible=cards.findIndex(c=>String(c.id)===String(id)),toVisible=cards.findIndex(c=>String(c.id)===String(destination));const [item]=cards.splice(fromVisible,1);cards.splice(toVisible,0,item);if(save()){orderMode='manual';try{localStorage.setItem(ORDER_KEY,'manual')}catch{}render();updateOrderControls();reorderNotice('✓ Ordine manuale attivato · posizione '+(to+1),true);toast('Tessera spostata alla posizione '+(to+1))}else cards=old}
   }else reorderNotice(defaultReorderText);
  };
  node.draggable=false;
@@ -62,7 +62,7 @@ function installCardReorder(node,id){
  node.addEventListener('dragstart',e=>{active=true;node.classList.add('is-reordering');e.dataTransfer.setData('text/plain',String(id));e.dataTransfer.effectAllowed='move'});
  node.addEventListener('dragend',()=>stop(false));
  node.addEventListener('dragover',e=>{e.preventDefault();clear();target=node;node.classList.add('drop-target')});
- node.addEventListener('drop',e=>{e.preventDefault();const sourceId=e.dataTransfer.getData('text/plain');const source=cards.findIndex(c=>String(c.id)===sourceId),destination=cards.findIndex(c=>String(c.id)===String(id));if(source>=0&&destination>=0&&source!==destination){const old=cards.slice();const [item]=cards.splice(source,1);cards.splice(destination,0,item);if(save()){orderMode='manual';try{localStorage.setItem(ORDER_KEY,'manual')}catch{}render();updateOrderControls();reorderNotice('✓ Ordine manuale attivato · posizione '+(destination+1),true);toast('Ordine aggiornato')}else cards=old}});
+ node.addEventListener('drop',e=>{e.preventDefault();const sourceId=e.dataTransfer.getData('text/plain');const source=cards.findIndex(c=>String(c.id)===sourceId),destination=cards.findIndex(c=>String(c.id)===String(id));if(source>=0&&destination>=0&&source!==destination){const old=cards.slice();if(orderMode==='auto')cards=rankedCards();const fromVisible=cards.findIndex(c=>String(c.id)===sourceId),toVisible=cards.findIndex(c=>String(c.id)===String(id));const [item]=cards.splice(fromVisible,1);cards.splice(toVisible,0,item);if(save()){orderMode='manual';try{localStorage.setItem(ORDER_KEY,'manual')}catch{}render();updateOrderControls();reorderNotice('✓ Ordine manuale attivato · posizione '+(destination+1),true);toast('Ordine aggiornato')}else cards=old}});
 }
 let homeRenderId=0;
 function render(){
