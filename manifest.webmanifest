@@ -1,0 +1,31 @@
+{
+  "name": "TessOro - Le tue tessere",
+  "short_name": "TessOro",
+  "description": "Le tue tessere fedeltà, sempre con te",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#123e72",
+  "theme_color": "#123e72",
+  "lang": "it",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
