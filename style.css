@@ -60,7 +60,7 @@ body.scanner-open{overflow:hidden}
 .scanner-panel .scanner-frame:has(video[hidden]){display:block}
 .scanner-panel .scanner-frame{aspect-ratio:16/9}
 
-/* v1.0.21: proporzioni compatte del barcode, ritaglio tessera */
+/* v1.0.31: proporzioni compatte del barcode, ritaglio tessera */
 .barcodebox svg{display:block;width:100%;max-width:540px;height:auto;min-height:0;max-height:220px;margin:0 auto;}
 .barcodebox{padding:22px 14px}
 .barcodebox p{margin:12px 0 0}
@@ -73,7 +73,7 @@ body.scanner-open{overflow:hidden}
 .crop-panel label{display:block;margin:10px 0;font-size:13px}.crop-panel input[type=range]{width:100%;margin:6px 0}
 #photoOcrStatus{line-height:1.4}
 
-/* v1.0.22: ritaglio multitouch con riferimento tessera */
+/* v1.0.32: ritaglio multitouch con riferimento tessera */
 .crop-viewport{position:relative;touch-action:none;user-select:none;-webkit-user-select:none}
 .crop-viewport canvas{width:100%;height:100%;display:block;touch-action:none}
 .crop-guide{position:absolute;inset:5%;border:2px dashed #ffdc67;border-radius:10px;pointer-events:none;box-shadow:0 0 0 100vmax #0002}
@@ -82,7 +82,7 @@ body.scanner-open{overflow:hidden}
 #cancelCrop{order:1}
 #removePhoto{display:flex;margin-left:auto;margin-right:0}
 
-/* v1.0.23: fotocamera integrata con guida tessera */
+/* v1.0.33: fotocamera integrata con guida tessera */
 .photo-camera-frame{position:relative;width:100%;aspect-ratio:1.586;overflow:hidden;background:#070d15;border-radius:12px}
 .photo-camera-frame video{width:100%;height:100%;object-fit:cover;display:block}
 .photo-camera-guide{position:absolute;inset:7%;border:3px solid #ffcf4a;border-radius:12px;box-shadow:0 0 0 100vmax #0005;pointer-events:none}
@@ -243,7 +243,13 @@ body.barcode-fullscreen-open{overflow:hidden}
 .share-tessoro-actions button{flex:1;min-width:120px}
 .share-tessoro .hint{font-size:.82rem;color:#53677e}
 
-/* TessOro 1.0.2: scelta ordinamento */
+/* TessOro 1.0.3: scelta ordinamento */
 #home .order-toolbar{display:flex;justify-content:flex-end;margin:0 0 7px}
 #home #orderMode{font-size:13px;padding:8px 12px;min-height:36px;border-radius:10px;background:#e7f1fc;color:#164b80;border:1px solid #aac8e6;font-weight:700}
 #home #orderMode[aria-pressed='true']{background:#e5f7ee;color:#176d46;border-color:#94d8b1}
+
+/* Ordinamento nel menu, senza occupare spazio nella raccolta */
+.order-settings{padding:14px 16px;margin:14px 0;border:1px solid #d0dfef;border-radius:14px;background:#f4f8ff}
+.order-settings h3{margin:0 0 6px}.order-settings p{margin:0 0 12px;font-size:.9rem}
+.order-settings #orderMode{width:100%;background:#e7f1fc;color:#164b80;border:1px solid #aac8e6;font-weight:700}
+.order-settings #orderMode[aria-pressed='true']{background:#e5f7ee;color:#176d46;border-color:#94d8b1}
