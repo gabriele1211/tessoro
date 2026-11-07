@@ -828,3 +828,7 @@ if('serviceWorker' in navigator){
   }catch(err){console.warn('Aggiornamento PWA non disponibile',err)}
  });
 }
+
+const TESSORO_SHARE_URL='https://gabriele1211.github.io/tessoro/';
+$('copyTessoroLink').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(TESSORO_SHARE_URL);toast('Link TessOro copiato')}catch{window.prompt('Copia il link:',TESSORO_SHARE_URL)}});
+$('shareTessoro').addEventListener('click',async()=>{if(navigator.share){try{await navigator.share({title:'TessOro',text:'Scopri TessOro, il portatessere digitale.',url:TESSORO_SHARE_URL})}catch(e){if(e.name!=='AbortError')toast('Usa Copia link per condividere')}}else{$('copyTessoroLink').click()}});
