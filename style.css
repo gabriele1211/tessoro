@@ -242,3 +242,8 @@ body.barcode-fullscreen-open{overflow:hidden}
 .share-tessoro-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .share-tessoro-actions button{flex:1;min-width:120px}
 .share-tessoro .hint{font-size:.82rem;color:#53677e}
+
+/* TessOro 1.0.2: scelta ordinamento */
+#home .order-toolbar{display:flex;justify-content:flex-end;margin:0 0 7px}
+#home #orderMode{font-size:13px;padding:8px 12px;min-height:36px;border-radius:10px;background:#e7f1fc;color:#164b80;border:1px solid #aac8e6;font-weight:700}
+#home #orderMode[aria-pressed='true']{background:#e5f7ee;color:#176d46;border-color:#94d8b1}
