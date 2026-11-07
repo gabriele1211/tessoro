@@ -267,3 +267,12 @@ header>div small{display:block;font-size:10px!important;line-height:1.35;letter-
 /* TessOro 1.0.6 · icona di testata più evidente, senza alterare il layout */
 header>img{width:clamp(52px,14vw,62px)!important;height:clamp(52px,14vw,62px)!important;flex:0 0 auto!important;object-fit:cover;border-radius:15px!important}
 @media(max-width:380px){header>img{width:50px!important;height:50px!important}}
+
+/* TessOro 1.0.7 · corregge il limite a 50px sui piccoli iPhone */
+header{gap:5px!important;padding-left:7px!important;padding-right:7px!important}
+header>img{width:68px!important;height:68px!important;min-width:68px!important;min-height:68px!important;max-width:none!important;flex:0 0 68px!important;border-radius:16px!important}
+header>div{flex:1 1 0!important;min-width:0!important}
+header>div h1{font-size:clamp(21px,5.8vw,26px)!important;letter-spacing:-.9px!important}
+header .header-add{padding:8px 6px!important;font-size:clamp(10px,2.9vw,13px)!important}
+header .iconbtn{min-width:32px!important;padding:7px!important}
+@media(max-width:380px){header>img{width:66px!important;height:66px!important;min-width:66px!important;min-height:66px!important;flex-basis:66px!important}}
