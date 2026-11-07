@@ -233,3 +233,12 @@ body>header .header-add[hidden]{display:none!important}
 #barcodeFullscreenNumber:empty{display:none}
 .barcode-fullscreen-hint{color:#666;font-size:clamp(12px,3vw,16px);text-align:center;margin-top:12px}
 body.barcode-fullscreen-open{overflow:hidden}
+
+.share-tessoro{margin:20px 0;padding:18px;border:1px solid #adc5dc;border-radius:18px;background:#eaf2fc;color:#173757;text-align:center}
+.share-tessoro h3{margin:0 0 8px;font-size:1.18rem}.share-tessoro p{line-height:1.45}
+.share-tessoro-qr{display:flex;justify-content:center;margin:16px auto}
+.share-tessoro-qr img{display:block;width:min(100%,270px);height:auto;aspect-ratio:1;background:#fff;padding:10px;border-radius:14px;border:1px solid #d5e0ec}
+.share-tessoro-link{font-size:.9rem;overflow-wrap:anywhere;font-weight:650}
+.share-tessoro-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.share-tessoro-actions button{flex:1;min-width:120px}
+.share-tessoro .hint{font-size:.82rem;color:#53677e}
