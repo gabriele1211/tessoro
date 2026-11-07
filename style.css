@@ -253,3 +253,8 @@ body.barcode-fullscreen-open{overflow:hidden}
 .order-settings h3{margin:0 0 6px}.order-settings p{margin:0 0 12px;font-size:.9rem}
 .order-settings #orderMode{width:100%;background:#e7f1fc;color:#164b80;border:1px solid #aac8e6;font-weight:700}
 .order-settings #orderMode[aria-pressed='true']{background:#e5f7ee;color:#176d46;border-color:#94d8b1}
+
+/* TessOro 1.0.4: contrasto leggibile nel riquadro ordinamento */
+#info .order-settings{background:#ffffff!important;color:#172b45!important;border:1px solid #b5c9dc!important}
+#info .order-settings h3,#info .order-settings p{color:#172b45!important;opacity:1!important;-webkit-text-fill-color:#172b45!important}
+#info .order-settings button#orderMode,#info .order-settings button#orderMode.secondary,#info .order-settings button#orderMode[aria-pressed='true']{background:#123e72!important;color:#ffffff!important;-webkit-text-fill-color:#ffffff!important;border:2px solid #123e72!important;opacity:1!important;text-shadow:none!important;min-height:46px;font-size:15px}
