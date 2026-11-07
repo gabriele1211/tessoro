@@ -79,7 +79,7 @@ function render(){
   const deco=document.createElement('span');deco.className='wallet-deco';deco.setAttribute('aria-hidden','true');
   fallback.append(monogram,brand,deco);visual.append(fallback);
   const info=document.createElement('span');info.className='wallet-info';
-  const name=document.createElement('strong');name.textContent=c.name.startsWith('Tessera '+c.number)?'Tessera fotografata':c.name;
+  const name=document.createElement('strong');name.textContent=c.name.startsWith('Tessera '+c.number)?'Tessera fedeltà':c.name;
   const number=document.createElement('small');number.textContent=c.number;
   const arrow=document.createElement('span');arrow.className='chevron';arrow.textContent='›';
   info.append(name,number);b.append(visual,info,arrow);b.onclick=()=>{if(Date.now()<reorderSuppressUntil)return;detail(c.id)};b.dataset.cardId=String(c.id);installCardReorder(b,c.id);root.append(b);
