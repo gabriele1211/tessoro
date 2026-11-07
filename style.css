@@ -258,3 +258,8 @@ body.barcode-fullscreen-open{overflow:hidden}
 #info .order-settings{background:#ffffff!important;color:#172b45!important;border:1px solid #b5c9dc!important}
 #info .order-settings h3,#info .order-settings p{color:#172b45!important;opacity:1!important;-webkit-text-fill-color:#172b45!important}
 #info .order-settings button#orderMode,#info .order-settings button#orderMode.secondary,#info .order-settings button#orderMode[aria-pressed='true']{background:#123e72!important;color:#ffffff!important;-webkit-text-fill-color:#ffffff!important;border:2px solid #123e72!important;opacity:1!important;text-shadow:none!important;min-height:46px;font-size:15px}
+
+/* TessOro 1.0.5 · firma tipografica premium, senza allargare la testata */
+header>div h1{font-family:Georgia,'Times New Roman',serif!important;font-size:clamp(23px,6.1vw,29px)!important;font-weight:700!important;letter-spacing:-1.1px!important;line-height:1.08!important;white-space:nowrap!important;color:#f6d990!important;background:linear-gradient(135deg,#fff6d6 0%,#eec56d 48%,#fff1be 75%,#d7a84d 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:none!important}
+header>div small{display:block;font-size:10px!important;line-height:1.35;letter-spacing:.08px}
+@media(max-width:380px){header>div h1{font-size:clamp(21px,5.8vw,25px)!important;letter-spacing:-.9px!important}}
