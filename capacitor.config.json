@@ -1,0 +1,12 @@
+{
+  "appId": "io.github.gabriele1211.tessoro",
+  "appName": "TessOro",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "ios": {
+    "contentInset": "automatic"
+  },
+  "android": {
+    "allowMixedContent": false
+  }
+}
